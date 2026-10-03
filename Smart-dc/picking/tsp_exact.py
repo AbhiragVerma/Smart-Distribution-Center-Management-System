@@ -1,15 +1,3 @@
-"""
-Exact picking order for a multi-item order (Travelling Salesperson Problem).
-
-The picker starts at the picking station, visits every item location once and
-finishes at the dispatch area. This file tries every possible visiting order
-and keeps the cheapest one, so the answer is always the optimal order.
-
-Syllabus topic: Module 2 - Travelling Salesperson Problem.
-
-Run on its own:   python picking/tsp_exact.py
-"""
-
 from dataclasses import dataclass
 from itertools import permutations
 
@@ -99,12 +87,6 @@ def format_plan(plan):
     return (f"{plan.method:<18} {route}\n"
             f"{'':<18} cost = {plan.cost} m, orders checked = {plan.orders_checked}")
 
-
-# ---------------------------------------------------------------------------
-# Sample data, used only when this file is run on its own.
-# Coordinates are in metres. Manhattan distance stands in for the real route
-# cost until routing/astar.py is connected.
-# ---------------------------------------------------------------------------
 SAMPLE_COORDS = {
     "P1": (20, 0),
     "D1": (0, 0),
