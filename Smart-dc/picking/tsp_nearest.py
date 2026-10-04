@@ -36,7 +36,6 @@ def nearest_neighbour_order(item_locations, distance, start=START, end=END):
 
     while remaining:
         # Closest location first. Ties are broken by name so the result is
-        # the same on every run.
         nearest = min(remaining, key=lambda stop: (table[(current, stop)], stop))
         tour.append(nearest)
         remaining.remove(nearest)

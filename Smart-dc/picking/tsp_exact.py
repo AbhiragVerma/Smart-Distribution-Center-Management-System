@@ -111,7 +111,7 @@ if __name__ == "__main__":
     orders = {
         "ORD101": ["S2", "S4", "S7"],
         "ORD102": ["S1", "S3", "S4", "S6", "S9"],
-        "ORD103": ["S5", "S5", "S8"],          # two items on the same shelf
+        "ORD103": ["S5", "S5", "S8"],          
     }
     for order_id, locations in orders.items():
         plan = exact_picking_order(locations, sample_distance)
