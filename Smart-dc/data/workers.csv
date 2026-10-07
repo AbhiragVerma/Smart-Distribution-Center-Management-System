@@ -1,0 +1,4 @@
+worker_id,allowed_zones,free_slots
+W1,A|B,9-10|10-11
+W2,B|C,10-11|11-12
+W3,A|C,9-10|11-12
