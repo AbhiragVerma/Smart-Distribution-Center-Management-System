@@ -1,4 +1,4 @@
-order_id,zone
-O1,A
-O2,B
-O3,C
+order_id,item_ids,status
+ORD101,I001|I004|I007,Pending
+ORD102,I002|I003|I009,Pending
+ORD103,I005|I008,Pending
