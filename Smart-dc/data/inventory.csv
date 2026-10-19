@@ -1,0 +1,11 @@
+item_id,name,location_id,quantity
+I001,Keyboard,S1,20
+I002,Mouse,S2,35
+I003,Monitor,S3,15
+I004,Printer,S4,10
+I005,USB_Cable,S5,50
+I006,HDMI_Cable,S6,40
+I007,Laptop_Stand,S7,18
+I008,Webcam,S8,12
+I009,Headset,S9,25
+I010,Router,S1,8

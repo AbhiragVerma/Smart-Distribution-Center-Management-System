@@ -1,4 +1,7 @@
-worker_id,allowed_zones,free_slots
-W1,A|B,9-10|10-11
-W2,B|C,10-11|11-12
-W3,A|C,9-10|11-12
+worker_id,name,zone,available
+W001,Rahul,Zone-A,true
+W002,Priya,Zone-B,true
+W003,Arjun,Zone-C,false
+W004,Neha,Zone-D,true
+W005,Karan,Zone-A,true
+W006,Meera,Zone-C,true

@@ -16,7 +16,7 @@ class Worker:
 
 def load_workers(filename):
     """
-    Load worker information from workers.csv.
+    Load scheduling worker information.
 
     CSV format:
     worker_id,allowed_zones,free_slots
@@ -34,42 +34,48 @@ def load_workers(filename):
             zones = row["allowed_zones"].split("|")
             slots = row["free_slots"].split("|")
 
-            worker = Worker(
-                row["worker_id"],
-                zones,
-                slots
+            workers.append(
+                Worker(
+                    row["worker_id"],
+                    zones,
+                    slots
+                )
             )
-
-            workers.append(worker)
 
     return workers
 
+
 def load_orders(filename):
+    """
+    Load scheduling orders.
+
+    CSV format:
+    order_id,zone
+    O1,A
+    O2,B
+    O3,C
+    """
+
     orders = []
 
     with open(filename, newline="") as file:
         reader = csv.DictReader(file)
 
         for row in reader:
-            order = Order(
-                row["order_id"],
-                row["zone"]
+            orders.append(
+                Order(
+                    row["order_id"],
+                    row["zone"]
+                )
             )
-
-            orders.append(order)
 
     return orders
 
 
 def build_domains(orders, workers):
     """
-    Build the domain of possible assignments for every order.
-
-    Each domain value is:
-        (worker_id, time_slot)
-
-    A worker can be included only if they are
-    allowed to work in the order's zone.
+    Build possible (worker, time-slot) assignments
+    for every order.
     """
 
     domains = {}
@@ -79,11 +85,10 @@ def build_domains(orders, workers):
 
         for worker in workers:
 
-            # Zone constraint
+            # Worker must be allowed in order's zone
             if order.zone not in worker.zones:
                 continue
 
-            # Add every available time slot
             for slot in worker.available_slots:
                 domains[order.order_id].append(
                     (worker.worker_id, slot)
@@ -94,17 +99,11 @@ def build_domains(orders, workers):
 
 def is_valid_assignment(order, assignment, current_schedule, workers):
     """
-    Check whether an assignment is valid.
-
-    Conditions:
-    1. Worker must be allowed to work in the order's zone.
-    2. Worker must actually be available in that time slot.
-    3. Worker cannot handle two orders in the same time slot.
+    Check zone, availability and worker/time-slot constraints.
     """
 
     worker_id, time_slot = assignment
 
-    # Find the worker
     worker = None
 
     for w in workers:
@@ -112,7 +111,6 @@ def is_valid_assignment(order, assignment, current_schedule, workers):
             worker = w
             break
 
-    # Worker does not exist
     if worker is None:
         return False
 
@@ -124,25 +122,25 @@ def is_valid_assignment(order, assignment, current_schedule, workers):
     if time_slot not in worker.available_slots:
         return False
 
-    # Worker cannot handle two orders simultaneously
-    for assigned_order, assigned_assignment in current_schedule.items():
+    # Same worker cannot handle two orders
+    # in the same time slot.
+    for assigned_assignment in current_schedule.values():
 
         assigned_worker, assigned_slot = assigned_assignment
 
-        if assigned_worker == worker_id and assigned_slot == time_slot:
+        if (
+            assigned_worker == worker_id
+            and assigned_slot == time_slot
+        ):
             return False
 
     return True
 
+
 if __name__ == "__main__":
 
-    workers = load_workers("../data/workers.csv")
-
-    orders = [
-        Order("O1", "A"),
-        Order("O2", "B"),
-        Order("O3", "C")
-    ]
+    workers = load_workers("../data/scheduling_workers.csv")
+    orders = load_orders("../data/scheduling_orders.csv")
 
     domains = build_domains(orders, workers)
 
