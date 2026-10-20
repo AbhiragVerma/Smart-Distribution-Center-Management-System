@@ -9,3 +9,13 @@ I007,Laptop_Stand,S7,18
 I008,Webcam,S8,12
 I009,Headset,S9,25
 I010,Router,S1,8
+I011,Fragile_Glassware,L01,14
+I012,Ceramic_Mug,L02,24
+I013,Safety_Goggles,L03,30
+I014,Packing_Tape,L04,60
+I015,Bubble_Wrap,L05,45
+I016,Hard_Drive,L06,16
+I017,Tablet,L07,11
+I018,Power_Bank,L08,22
+I019,Glass_Bottle,L09,19
+I020,Label_Roll,L10,75

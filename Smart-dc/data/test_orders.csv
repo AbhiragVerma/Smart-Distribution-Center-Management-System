@@ -1,0 +1,11 @@
+order_id,item_ids,priority,zone
+ORD101,I001|I002,urgent,Zone-A
+ORD102,I003|I004,normal,Zone-B
+ORD103,I005|I006,normal,Zone-C
+ORD104,I007|I008,urgent,Zone-D
+ORD105,I009|I010,normal,Zone-A
+ORD106,I011|I012,normal,Zone-B
+ORD107,I013|I014,urgent,Zone-C
+ORD108,I015|I016,normal,Zone-D
+ORD109,I017|I018,normal,Zone-A
+ORD110,I019|I020,normal,Zone-B
