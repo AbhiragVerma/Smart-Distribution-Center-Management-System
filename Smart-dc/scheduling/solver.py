@@ -2,20 +2,17 @@ from model import (
     load_workers,
     load_orders,
     build_domains,
-    is_valid_assignment
+    is_valid_assignment,
+    
 )
 
 
-def backtrack(orders, domains, assignment, workers):
-    """
-    Backtracking search for a valid schedule.
-    """
 
-    # All orders assigned
+
+def backtrack(orders, domains, assignment, workers, stats):
     if len(assignment) == len(orders):
         return assignment.copy()
 
-    # Select next unassigned order
     current_order = None
 
     for order in orders:
@@ -23,67 +20,133 @@ def backtrack(orders, domains, assignment, workers):
             current_order = order
             break
 
-    # Try every possible assignment
     for option in domains[current_order.order_id]:
+        stats["backtracks"] += 1
 
         if is_valid_assignment(
-            current_order,
-            option,
-            assignment,
-            workers
+            current_order, option, assignment, workers
         ):
-
-            # Choose
             assignment[current_order.order_id] = option
 
-            # Explore
             result = backtrack(
-                orders,
-                domains,
-                assignment,
-                workers
+                orders, domains, assignment, workers, stats
             )
 
             if result is not None:
                 return result
 
-            # Backtrack
             del assignment[current_order.order_id]
 
     return None
 
 
+# def backtrack(orders, domains, assignment, workers):
+#     """
+#     Backtracking search for a valid schedule.
+#     """
+
+#     # All orders assigned
+#     if len(assignment) == len(orders):
+#         return assignment.copy()
+
+#     # Select next unassigned order
+#     current_order = None
+
+#     for order in orders:
+#         if order.order_id not in assignment:
+#             current_order = order
+#             break
+
+#     # Try every possible assignment
+#     for option in domains[current_order.order_id]:
+
+#         if is_valid_assignment(
+#             current_order,
+#             option,
+#             assignment,
+#             workers
+#         ):
+
+#             # Choose
+#             assignment[current_order.order_id] = option
+
+#             # Explore
+#             result = backtrack(
+#                 orders,
+#                 domains,
+#                 assignment,
+#                 workers
+#             )
+
+#             if result is not None:
+#                 return result
+
+#             # Backtrack
+#             del assignment[current_order.order_id]
+
+#     return None
+
+
 def find_schedule(orders, domains, workers):
-    """
-    Find a complete schedule using backtracking.
-    """
+    stats = {"backtracks": 0}
 
     solution = backtrack(
-        orders,
-        domains,
-        {},
-        workers
+        orders, domains, {}, workers, stats
     )
 
     if solution is not None:
         return {
             "success": True,
             "schedule": solution,
-            "unassigned": []
+            "unassigned": [],
+            "backtracks": stats["backtracks"]
         }
 
-    # Orders having no possible assignments
-    unassigned = []
-
-    for order in orders:
-        if not domains[order.order_id]:
-            unassigned.append(order.order_id)
+    unassigned = [
+        order.order_id
+        for order in orders
+        if not domains[order.order_id]
+    ]
 
     return {
         "success": False,
         "schedule": {},
-        "unassigned": unassigned
+        "unassigned": unassigned,
+        "backtracks": stats["backtracks"]
     }
+
+
+# def find_schedule(orders, domains, workers):
+#     """
+#     Find a complete schedule using backtracking.
+#     """
+
+#     solution = backtrack(
+#         orders,
+#         domains,
+#         {},
+#         workers
+#     )
+
+#     if solution is not None:
+#         return {
+#             "success": True,
+#             "schedule": solution,
+#             "unassigned": []
+#         }
+
+#     # Orders having no possible assignments
+#     unassigned = []
+
+#     for order in orders:
+#         if not domains[order.order_id]:
+#             unassigned.append(order.order_id)
+
+#     return {
+#         "success": False,
+#         "schedule": {},
+#         "unassigned": unassigned
+#     }
 
 
 if __name__ == "__main__":
